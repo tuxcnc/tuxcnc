@@ -1,0 +1,18 @@
+diff -Naur old/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc new/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc
+--- old/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc	2019-12-30 19:35:11.000000000 +0100
++++ new/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc	2020-01-01 13:58:02.785981571 +0100
+@@ -501,14 +501,6 @@
+     if(getuid() == 0) {
+         char *fallback_uid_str = getenv("RTAPI_UID");
+         int fallback_uid = fallback_uid_str ? atoi(fallback_uid_str) : 0;
+-        if(fallback_uid == 0)
+-        {
+-            fprintf(stderr,
+-                "Refusing to run as root without fallback UID specified\n"
+-                "To run under a debugger with I/O, use e.g.,\n"
+-                "    sudo env RTAPI_UID=`id -u` RTAPI_FIFO_PATH=$HOME/.rtapi_fifo gdb " EMC2_BIN_DIR "/rtapi_app\n");
+-            exit(1);
+-        }
+         setreuid(fallback_uid, 0);
+         fprintf(stderr,
+             "Running with fallback_uid.  getuid()=%d geteuid()=%d\n",
