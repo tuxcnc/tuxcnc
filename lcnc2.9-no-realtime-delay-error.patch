@@ -1,0 +1,12 @@
+diff -Naur old/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc new/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc
+--- old/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc	2020-07-05 05:03:04.000000000 +0200
++++ new/linuxcnc-master/src/rtapi/uspace_rtapi_app.cc	2020-07-05 16:12:37.568640494 +0200
+@@ -898,7 +898,7 @@
+ }
+ 
+ void RtapiApp::unexpected_realtime_delay(rtapi_task *task, int nperiod) {
+-    static int printed = 0;
++    static int printed = 1;
+     if(!printed)
+     {
+         rtapi_print_msg(RTAPI_MSG_ERR,
