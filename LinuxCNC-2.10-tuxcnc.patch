@@ -1,0 +1,38 @@
+diff -Naur src/rtapi/uspace_rtapi_app.cc src/rtapi/uspace_rtapi_app.cc
+--- src/rtapi/uspace_rtapi_app.cc	2025-08-12 19:03:20.071503052 +0200
++++ src/rtapi/uspace_rtapi_app.cc	2025-08-12 19:10:42.776281292 +0200
+@@ -519,25 +519,6 @@
+ }
+ 
+ int main(int argc, char **argv) {
+-    if(getuid() == 0) {
+-        char *fallback_uid_str = getenv("RTAPI_UID");
+-        int fallback_uid = fallback_uid_str ? atoi(fallback_uid_str) : 0;
+-        if(fallback_uid == 0)
+-        {
+-	    // Cppcheck cannot see EMC2_BIN_DIR when RTAPI is defined, but that
+-	    // doesn't happen in uspace.
+-            fprintf(stderr,
+-                "Refusing to run as root without fallback UID specified\n"
+-                "To run under a debugger with I/O, use e.g.,\n"
+-                // cppcheck-suppress unknownMacro
+-                "    sudo env RTAPI_UID=`id -u` RTAPI_FIFO_PATH=$HOME/.rtapi_fifo gdb " EMC2_BIN_DIR "/rtapi_app\n");
+-            exit(1);
+-        }
+-        if (setreuid(fallback_uid, 0) != 0) { perror("setreuid"); abort(); }
+-        fprintf(stderr,
+-            "Running with fallback_uid.  getuid()=%d geteuid()=%d\n",
+-            getuid(), geteuid());
+-    }
+     ruid = getuid();
+     euid = geteuid();
+     if (setresuid(euid, euid, ruid) != 0) { perror("setresuid"); abort(); }
+@@ -962,7 +943,7 @@
+ }
+ 
+ void RtapiApp::unexpected_realtime_delay(rtapi_task *task, int /*nperiod*/) {
+-    static int printed = 0;
++    static int printed = 1;
+     if(!printed)
+     {
+         rtapi_print_msg(RTAPI_MSG_ERR,
