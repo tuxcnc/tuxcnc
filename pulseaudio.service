@@ -1,0 +1,13 @@
+[Unit]
+Description=PulseAudio Sound System
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/pulseaudio --system --disallow-exit --disable-shm --no-cpu-limit
+User=root
+Group=root
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
